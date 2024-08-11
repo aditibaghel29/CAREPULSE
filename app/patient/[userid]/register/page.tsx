@@ -6,7 +6,7 @@ import RegisterForm from '@/components/forms/RegisterForm'
 import { useParams } from 'next/navigation'; 
 import { useState,useEffect } from 'react';
 const Page = () => {
-  
+        
     const { userid } = useParams(); // Fetch the user ID from the URL
 console.log("userid inside page/userid/register i ",userid)
     const [loading, setLoading] = useState(true);

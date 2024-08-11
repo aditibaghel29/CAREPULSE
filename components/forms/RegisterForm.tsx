@@ -75,11 +75,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ user }) =>{
         identificationDocument: imageUrl, // Store this in MongoDB
       };
   // Client-side
-console.log('Form Data to Submit:', dataToSubmit);
+
       const response = await axios.post(`/api/patient/create`, dataToSubmit);
       if (response.data.success) {
+
+        console.log('ID from response:', response.data.newPatient._id);
+
         toast.success('Patient registered successfully!');
-        router.push('/patients');
+        router.replace(`/patient/${response.data.newPatient._id}/new-appointment`);
+       
+
       }
     } catch (error) {
       console.error("Error during form submission:", error);
@@ -99,6 +104,9 @@ console.log('Form Data to Submit:', dataToSubmit);
 
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex-1">
+
+
+
 
         <section className=" space-y-4">
           <h1 className=" header ">Welcome 👋</h1>
@@ -192,6 +200,7 @@ renderSkeleton={(field) =>(
    <Label htmlFor={option} className= "cursor-pointer">
 {option}
    </Label>
+
  </div>
 ))}
 
