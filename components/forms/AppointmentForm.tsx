@@ -65,11 +65,12 @@ const AppointmentForm = ({ type, userid }: { userid: string; type: "create" | "c
         console.log("Appointment data before passing to the backend:", appointmentData);
   
         const response = await axios.post(`/appointment/create`, appointmentData);
-  
+      console.log(response);
         if (response.data.success) {
           form.reset();
-          toast.success("Appointment granted");
-          router.replace(`/patient/${userid}/new-appointment/success?appointmentId=${response.data._id}`);
+          toast.success("Appointment has been procceds");
+          
+          router.replace(`/patient/${userid}/new-appointment/success?appointmentId=${response.data.newAppointment._id}`);
         } else {
           toast.error(response.data.message || "An error occurred");
         }
