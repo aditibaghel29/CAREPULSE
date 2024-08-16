@@ -1,16 +1,12 @@
-import AppointmentModel from "@/models/Appointment"; // Ensure this path is correct
+import AppointmentModel from "@/models/Appointment"; 
 import { NextResponse } from "next/server";
 
-// Example route handler for getting appointment details
+
 export async function GET(request: Request) {
   try {
-    // Extract appointmentId from the query parameters
+  
     const { searchParams } = new URL(request.url);
-
-    // Debug log to check query parameters
     console.log("searchParams inside the backend code:", searchParams);
-
-    // Ensure the key used to get the parameter matches your frontend
     const appointmentId = searchParams.get("id");
 console.log(appointmentId);
     if (!appointmentId) {

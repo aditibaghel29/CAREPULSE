@@ -18,8 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { FormFieldType } from "./forms/PatientForm"
-import DatePicker from "react-datepicker";
+import { FormFieldType } from "./forms/UserForm"
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
 
@@ -51,7 +50,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
 
 
       return (
-        <div className=" flex rounded-md border-x-dark-500 bg-dark-400">
+        <div className=" flex rounded-md  bg-dark-400  border-x-dark-100">
 
 
           {
@@ -82,6 +81,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       break;
 
     case FormFieldType.PHONE_INPUT:
+      console.log('Current field value:', field.value); // Debugging: Check the value being passed
       return (
         <FormControl>
           <PhoneInput
@@ -89,8 +89,14 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             placeholder={props.placeholder}
             international
             withCountryCallingCode
-            value={field.value as E164Number | undefined}
-            onChange={field.onChange}
+            // value={field.value as E164Number | undefined}
+            value={typeof field.value === 'string' ? field.value : undefined}
+
+            // onChange={field.onChange}
+            onChange={(value) => {
+              console.log('New phone number value:', value); // Debugging: Check the new value
+              field.onChange(typeof value === 'string' ? value : undefined);
+            }}
             className="input-phone"
           />
         </FormControl>

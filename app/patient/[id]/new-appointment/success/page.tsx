@@ -1,23 +1,25 @@
+
+
 "use client";
 
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Doctors } from '@/constants';
-// import { formatDateTime } from "@/lib/utils";
+
+import { formatDateTime } from '@/app/lib/utils';
 import { useSearchParams,useParams } from 'next/navigation';
 const RequestSuccess = () => {
   const params = useParams();
   const searchParams = useSearchParams();
 
   const appointmentId = searchParams.get('appointmentId');
-  const userid = params.userid; 
-  
-  const [appointmentDetails, setAppointmentDetails] = useState<any>(null);
+  const {id} = params; 
+    const [appointmentDetails, setAppointmentDetails] = useState<any>(null);
   const [doctor, setDoctor] = useState<any>(null);
+  // const [patientid, setPatientid] = useState<any>(null);
 
   useEffect(() => {
     if (appointmentId && typeof appointmentId === 'string') {
@@ -26,7 +28,7 @@ const RequestSuccess = () => {
         .then(response => {
           const appointment = response.data.appointment;
           setAppointmentDetails(appointment);
-
+          // setPatientID(appointment.patient);
           // Find the doctor
           const foundDoctor = Doctors.find(
             (doctor) => doctor.name === appointment.primaryPhysician
@@ -35,7 +37,20 @@ const RequestSuccess = () => {
         })
         .catch(error => console.error('Error fetching appointment details:', error));
     }
+    // if (userid && typeof userid === 'string') {
+     
+    //   axios.get(`/api/users/getPatientidByUserid`, { params: { userid } })
+    //     .then(response => {
+
+    //       const patient = response.data.patient;
+    //       setPatientid(patient._id); // Store the patient's _id
+    //     })
+    //     .catch(error => console.error('Error fetching patient details:', error));
+    // }
+
   }, [appointmentId]);
+   
+  
 
   if (!appointmentDetails || !doctor) {
     return <p>Loading...</p>;
@@ -87,13 +102,13 @@ const RequestSuccess = () => {
               width={24}
               alt="calendar"
             />
-                      {/* <p> {formatDateTime(appointmentDetails.schedule).dateTime}</p> */}
+                      <p> {formatDateTime(appointmentDetails.schedule).dateTime}</p>
 
           </div>
         </section>
 
         <Button variant="outline" className="shad-primary-btn" asChild>
-          <Link href={`/patient/${userid}/new-appointment`}>
+          <Link href={`/patient/${id}/new-appointment`}>
             New Appointment
           </Link>
         </Button>
@@ -105,3 +120,5 @@ const RequestSuccess = () => {
 };
 
 export default RequestSuccess;
+
+

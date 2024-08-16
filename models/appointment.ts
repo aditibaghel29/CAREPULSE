@@ -2,12 +2,14 @@ import mongoose, { Document, Schema } from "mongoose";
 
 // Define the Appointment interface extending Document
 export interface Appointment extends Document {
+  user: mongoose.Types.ObjectId;
   patient: mongoose.Types.ObjectId;
   primaryPhysician: string;
   schedule: Date;
   reason: string;
-  status: "scheduled" | "completed" | "cancelled" | "created";
+  status: "scheduled" | "cancelled"|"pending";
   note: string;
+  patientName:string;
 }
 
 // Define the Appointment schema
@@ -31,12 +33,21 @@ const AppointmentSchema: Schema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["scheduled", "completed", "cancelled", "created"],
+    enum: ["scheduled", "cancelled", "pending"],
     default: "created",
   },
   note: {
     type: String,
     default: "",
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  patientName:{
+    type:String,
+    required: true,
   }
 });
 

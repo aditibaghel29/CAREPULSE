@@ -1,20 +1,23 @@
-import AppointmentModel from "@/models/Appointment"; // Ensure this path is correct
+import AppointmentModel from "@/models/Appointment"; 
 import { NextResponse } from "next/server";
-// Example route handler
+import dbConnect from "@/lib/dbConnect";
 export async function POST(request: Request) {
   try {
-    // Parse incoming JSON data
+    
+    dbConnect();
     const appointmentData = await request.json();
+    
     console.log("Appointment data received in the backend:", appointmentData);
-
-    // Validate and format data
+    
     const newAppointment = new AppointmentModel({
-      patient: appointmentData.patient, // Make sure this field exists in your schema
-      primaryPhysician: appointmentData.primaryPhysician, // Ensure this field is correct
+      user:appointmentData.user,
+      patient: appointmentData.patient, 
+      primaryPhysician: appointmentData.primaryPhysician, 
       schedule: new Date(appointmentData.schedule), // Convert string to Date object
       reason: appointmentData.reason,
-      status: appointmentData.status, // Ensure this value is among the enum values
+      status: appointmentData.status, 
       note: appointmentData.note,
+      patientName:appointmentData.patientName
     });
 
     console.log("Data before saving into MongoDB:", newAppointment);

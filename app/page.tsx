@@ -1,16 +1,19 @@
-
-
 import Image from "next/image";
 import Link from "next/link";
 
-import PatientForm from "@/components/forms/PatientForm";
+import UserForm from "@/components/forms/UserForm";
+import { PassKeyModel } from "@/components/PassKeyModel";
 
-const Home = () => {
+const Home = ({searchParams}:SearchParamProps) => {
+
+  const isAdmin=searchParams.admin==='true';
   
 
   return (
     <div className="flex h-screen max-h-screen">
    {/* to  do OTP verification / passkey model  */}
+
+{isAdmin && <PassKeyModel/>}
 
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px]">
@@ -22,7 +25,7 @@ const Home = () => {
             className="mb-12 h-10 w-fit"
           />
 
-          <PatientForm />
+          <UserForm />
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">

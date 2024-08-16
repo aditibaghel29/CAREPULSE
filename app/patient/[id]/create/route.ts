@@ -1,10 +1,7 @@
-
-
 import { NextRequest, NextResponse } from "next/server";
-
 import dbConnect from '@/lib/dbConnect';
 import  Patient  from "@/models/Patient";
- export async function POST(request: Request) {
+export async function POST(request: Request) {
     try {
       const { ...patientData } = await request.json();
   

@@ -64,8 +64,8 @@ export const PatientFormValidation = z.object({
     })
     .refine((file) => file.size <= 5 * 1024 * 1024, {
       message: "File size should be less than 5MB",
-    })
-    .optional(),
+    }),
+    // .optional(),
 
   treatmentConsent: z
     .boolean()
@@ -85,6 +85,7 @@ export const PatientFormValidation = z.object({
     .refine((value) => value === true, {
       message: "You must consent to privacy in order to proceed",
     }),
+    // userid:z.string()
 });
 
 export const CreateAppointmentSchema = z.object({
@@ -97,6 +98,9 @@ export const CreateAppointmentSchema = z.object({
     .max(500, "Reason must be at most 500 characters"),
   note: z.string().optional(),
   cancellationReason: z.string().optional(),
+  user:z.string(),
+  patient:z.string(),
+  patientName:z.string()
   
 });
 

@@ -23,7 +23,7 @@ export interface Patient extends Document {
   pastMedicalHistory?: string;
   identificationType?: string;
   identificationNumber?: string;
-  identificationDocument?: File;
+  identificationDocument?: string;
 //   identificationDocument?: File[];
   treatmentConsent: boolean;
   disclosureConsent: boolean;
@@ -42,7 +42,7 @@ const PatientSchema: Schema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],
-    unique: true,
+    // unique: true,
     match: [/.+\@.+\..+/, 'Please use a valid email address'],
   },
   phone: {
@@ -124,7 +124,8 @@ const PatientSchema: Schema = new mongoose.Schema({
     default: '',
   },
   identificationDocument: {
-    type: String
+    type: String,
+    default:'',
   },
   treatmentConsent: {
     type: Boolean,
@@ -141,6 +142,13 @@ const PatientSchema: Schema = new mongoose.Schema({
     required: [true, "Privacy consent is required"],
     default: false,
   },
+  userid:{
+   
+      type:String,
+      required:true,
+  
+  }
+  
 }, {
   timestamps: true, // Adds createdAt and updatedAt fields automatically
 });

@@ -9,10 +9,10 @@ export async function POST(request: NextRequest) {
     const { name, email, phone } = await request.json();
 
 
-    console.log("Data received at API:", { name, email, phone }); // Debugging log in the API
+    console.log("Data received at API:", { name, email, phone }); 
 
 
-    const existingUserByEmail = await UserModel.findOne({ email });  // Search using an object
+    const existingUserByEmail = await UserModel.findOne({ email });  
     if (existingUserByEmail) {
       return NextResponse.json(
         {
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const newUser = await UserModel.create({
       name,
       email,
-      phone,  // Use consistent case
+      phone,  
     });
 
 
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: "User registered successfully",
-        data:newUser
+        newUser,
       },
       { status: 201 }
     );
