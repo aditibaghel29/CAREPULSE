@@ -1,22 +1,22 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-// Define the Appointment interface extending Document
-export interface Appointment extends Document {
-  user: mongoose.Types.ObjectId;
-  patient: mongoose.Types.ObjectId;
-  primaryPhysician: string;
-  schedule: Date;
-  reason: string;
-  status: "scheduled" | "cancelled"|"pending";
-  note: string;
-  patientName:string;
-}
+// export interface Appointment extends Document {
+//   primaryPhysician: string;
+//   schedule: Date;
+//   reason: string;
+//   note: string;
+//   user: mongoose.Types.ObjectId;
+//   patient: mongoose.Types.ObjectId;
+//   status: "scheduled" | "cancelled"|"pending";
+//   patientName:string;
+
+// }
 
 // Define the Appointment schema
 const AppointmentSchema: Schema = new mongoose.Schema({
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
+  patientid: {
+    type: String,
+
     required: true,
   },
   primaryPhysician: {
@@ -40,18 +40,24 @@ const AppointmentSchema: Schema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+  userid: {
+    type: String,
+
+    
     required: true,
   },
-  patientName:{
-    type:String,
+  patientName: {
+    type: String,
     required: true,
-  }
+  },
+  cancellationReason: {
+    type: String,
+  },
 });
 
 // Create the Appointment model
-const AppointmentModel = mongoose.models.Appointment || mongoose.model<Appointment>('Appointment', AppointmentSchema);
+const AppointmentModel =
+  mongoose.models.Appointment ||
+  mongoose.model<CreateAppointmentParams>("Appointment", AppointmentSchema);
 
 export default AppointmentModel;

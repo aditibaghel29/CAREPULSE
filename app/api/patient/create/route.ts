@@ -8,7 +8,7 @@ import  Patient  from "@/models/Patient";
     try {
       const { ...patientData } = await request.json();
   
-      // Save the patient data first without the file URL
+      
       await dbConnect();
       const newPatient = new Patient(patientData);
       await newPatient.save();

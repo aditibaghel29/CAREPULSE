@@ -2,15 +2,17 @@
 import AppointmentForm from "@/components/forms/AppointmentForm";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Loading from "@/components/Loading";
 
 export function NewAppointment({ params: { id } }: { params: { id: string } }) 
 {
   const [userid, setUserId] = useState<string | null>(null);
- 
-  console.log(" patient ID inside the new appointment page:", id);
+  const[loading,setLoading]=useState(true);
+
 
   useEffect(() => {
     const fetchUserId = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`/api/patient/getUseridByPatientid?patientid=${id}`);
         if (response.ok) {
@@ -21,6 +23,8 @@ export function NewAppointment({ params: { id } }: { params: { id: string } })
         }
       } catch (error) {
         console.error("Error fetching patient ID:", error);
+      }finally {
+        setLoading(false);
       }
     };
 
@@ -29,6 +33,13 @@ export function NewAppointment({ params: { id } }: { params: { id: string } })
         fetchUserId();
     }
   }, [id]);
+
+   
+  if (loading) {
+    return <Loading />;
+  }
+
+
 
 
   return (

@@ -1,7 +1,6 @@
 import Image from "next/image";
-
 import { Button } from "./ui/button";
-
+import Loading from "./Loading";
 interface ButtonProps {
   isLoading: boolean;
   className?: string;
@@ -26,6 +25,7 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
           />
           Loading...
         </div>
+      
       ) : (
         children
       )}

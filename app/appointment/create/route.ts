@@ -10,8 +10,8 @@ export async function POST(request: Request) {
     console.log("Appointment data received in the backend:", appointmentData);
     
     const newAppointment = new AppointmentModel({
-      user:appointmentData.user,
-      patient: appointmentData.patient, 
+      userid:appointmentData.userid,
+      patientid: appointmentData.patientid, 
       primaryPhysician: appointmentData.primaryPhysician, 
       schedule: new Date(appointmentData.schedule), // Convert string to Date object
       reason: appointmentData.reason,

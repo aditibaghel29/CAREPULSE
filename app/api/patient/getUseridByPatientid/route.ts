@@ -16,6 +16,9 @@ export async function GET(req: NextRequest) {
 
     if (patient) {
       console.log("Patient found:", patient);
+        
+       console.log(patient.userid);
+       
       return NextResponse.json({ userid: patient.userid }); // Return the userid
     } else {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });

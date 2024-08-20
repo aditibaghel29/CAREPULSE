@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   await dbConnect();
   
   try {
-    const { name, email, phone } = await request.json();
+    const { name, email, phone }:CreateUserParams = await request.json();
 
 
     console.log("Data received at API:", { name, email, phone }); 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newUser = await UserModel.create({
+    const user = await UserModel.create({
       name,
       email,
       phone,  
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: "User registered successfully",
-        newUser,
+        user,
       },
       { status: 201 }
     );

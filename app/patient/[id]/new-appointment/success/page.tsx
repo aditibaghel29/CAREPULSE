@@ -1,59 +1,45 @@
-
-
 "use client";
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Doctors } from '@/constants';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Doctors } from "@/constants";
 
-import { formatDateTime } from '@/app/lib/utils';
-import { useSearchParams,useParams } from 'next/navigation';
+import { formatDateTime } from "@/app/lib/utils";
+import { useSearchParams, useParams } from "next/navigation";
+import Loading from "@/components/Loading";
 const RequestSuccess = () => {
   const params = useParams();
   const searchParams = useSearchParams();
 
-  const appointmentId = searchParams.get('appointmentId');
-  const {id} = params; 
-    const [appointmentDetails, setAppointmentDetails] = useState<any>(null);
+  const appointmentId = searchParams.get("appointmentId");
+  const { id } = params;
+  const [appointmentDetails, setAppointmentDetails] = useState<any>(null);
   const [doctor, setDoctor] = useState<any>(null);
   // const [patientid, setPatientid] = useState<any>(null);
 
   useEffect(() => {
-    if (appointmentId && typeof appointmentId === 'string') {
-      // Fetch appointment details using the appointmentId
-      axios.get(`/appointment/get`, { params: { id: appointmentId } })
-        .then(response => {
+    if (appointmentId && typeof appointmentId === "string") {
+      axios
+        .get(`/appointment/get`, { params: { id: appointmentId } })
+        .then((response) => {
           const appointment = response.data.appointment;
           setAppointmentDetails(appointment);
-          // setPatientID(appointment.patient);
-          // Find the doctor
           const foundDoctor = Doctors.find(
             (doctor) => doctor.name === appointment.primaryPhysician
           );
           setDoctor(foundDoctor || null);
         })
-        .catch(error => console.error('Error fetching appointment details:', error));
+        .catch((error) =>
+          console.error("Error fetching appointment details:", error)
+        );
     }
-    // if (userid && typeof userid === 'string') {
-     
-    //   axios.get(`/api/users/getPatientidByUserid`, { params: { userid } })
-    //     .then(response => {
-
-    //       const patient = response.data.patient;
-    //       setPatientid(patient._id); // Store the patient's _id
-    //     })
-    //     .catch(error => console.error('Error fetching patient details:', error));
-    // }
-
   }, [appointmentId]);
-   
-  
 
   if (!appointmentDetails || !doctor) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (
@@ -87,7 +73,7 @@ const RequestSuccess = () => {
           <p>Requested appointment details: </p>
           <div className="flex items-center gap-3">
             <Image
-              src={doctor.image}
+              src={doctor?.image!}
               alt="doctor"
               width={100}
               height={100}
@@ -102,15 +88,12 @@ const RequestSuccess = () => {
               width={24}
               alt="calendar"
             />
-                      <p> {formatDateTime(appointmentDetails.schedule).dateTime}</p>
-
+            <p> {formatDateTime(appointmentDetails.schedule).dateTime}</p>
           </div>
         </section>
 
         <Button variant="outline" className="shad-primary-btn" asChild>
-          <Link href={`/patient/${id}/new-appointment`}>
-            New Appointment
-          </Link>
+          <Link href={`/patient/${id}/new-appointment`}>New Appointment</Link>
         </Button>
 
         <p className="copyright">© 2024 CarePluse</p>
@@ -120,5 +103,3 @@ const RequestSuccess = () => {
 };
 
 export default RequestSuccess;
-
-

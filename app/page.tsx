@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-
-import UserForm from "@/components/forms/UserForm";
 import { PassKeyModel } from "@/components/PassKeyModel";
+import PatientForm from "@/components/forms/PatientForm";
 
 const Home = ({searchParams}:SearchParamProps) => {
 
@@ -11,7 +10,7 @@ const Home = ({searchParams}:SearchParamProps) => {
 
   return (
     <div className="flex h-screen max-h-screen">
-   {/* to  do OTP verification / passkey model  */}
+   
 
 {isAdmin && <PassKeyModel/>}
 
@@ -25,7 +24,7 @@ const Home = ({searchParams}:SearchParamProps) => {
             className="mb-12 h-10 w-fit"
           />
 
-          <UserForm />
+          <PatientForm />
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">

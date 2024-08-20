@@ -25,9 +25,9 @@ export async function GET(request: Request) {
     const cancelledCount = appointments.filter(appointment => appointment.status === 'cancelled').length;
 
     console.log("All appointments fetched from MongoDB:", appointments);
-    console.log("count of scheduled appoitnm,ent",scheduledCount),
-    console.log("count of pending appoitnm,ent",pendingCount),
-    console.log("count of cancelled appoitnm,ent",cancelledCount);
+    // console.log("count of scheduled appoitnm,ent",scheduledCount),
+    // console.log("count of pending appoitnm,ent",pendingCount),
+    // console.log("count of cancelled appoitnm,ent",cancelledCount);
 
     return NextResponse.json({
       success: true,

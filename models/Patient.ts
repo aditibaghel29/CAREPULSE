@@ -3,32 +3,33 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
 
 // Define the Patient interface extending Document
-export interface Patient extends Document {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  birthDate: Date;
-  gender: "Male" | "Female" | "Other";
-  address: string;
-  occupation: string;
-  emergencyContactName: string;
-  emergencyContactNumber: string;
-  primaryPhysician: string;
-  insuranceProvider: string;
-  insurancePolicyNumber: string;
-  allergies?: string;
-  currentMedication?: string;
-  familyMedicalHistory?: string;
-  pastMedicalHistory?: string;
-  identificationType?: string;
-  identificationNumber?: string;
-  identificationDocument?: string;
-//   identificationDocument?: File[];
-  treatmentConsent: boolean;
-  disclosureConsent: boolean;
-  privacyConsent: boolean;
-}
+// export interface Patient extends Document {
+//   _id: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   birthDate: Date;
+//   gender: "Male" | "Female" | "Other";
+//   address: string;
+//   occupation: string;
+//   emergencyContactName: string;
+//   emergencyContactNumber: string;
+//   primaryPhysician: string;
+//   insuranceProvider: string;
+//   insurancePolicyNumber: string;
+//   allergies?: string;
+//   currentMedication?: string;
+//   familyMedicalHistory?: string;
+//   pastMedicalHistory?: string;
+//   identificationType?: string;
+//   identificationNumber?: string;
+//   identificationDocument?: string;
+// //   identificationDocument?: File[];
+//   treatmentConsent: boolean;
+//   disclosureConsent: boolean;
+//   privacyConsent: boolean;
+//   userid:string;
+// }
 
 // Define the Patient schema
 const PatientSchema: Schema = new mongoose.Schema({
@@ -145,14 +146,16 @@ const PatientSchema: Schema = new mongoose.Schema({
   userid:{
    
       type:String,
-      required:true,
+      required: [true, "User id  chaiye h"],
   
   }
   
 }, {
-  timestamps: true, // Adds createdAt and updatedAt fields automatically
+  timestamps: true,
 });
 
-const PatientModel = mongoose.models.Patient || mongoose.model<Patient>('Patient', PatientSchema);
+// const PatientModel = mongoose.models.Patient || mongoose.model<Patient>('Patient', PatientSchema);
+const PatientModel = mongoose.models.Patient || mongoose.model<RegisterUserParams >('Patient', PatientSchema);
+
 
 export default PatientModel;

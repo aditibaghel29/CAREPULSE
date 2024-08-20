@@ -1,11 +1,12 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
 
 // Define the User interface extending Document
-export interface User extends Document { _id: string;
-  name: string;  
-  email: string;
-  phone: number;
-}
+// export interface User extends Document { 
+//   _id: string;
+//   name: string;  
+//   email: string;
+//   phone: number;
+// }
 
 // Define the User schema
 const UserSchema: Schema = new mongoose.Schema({

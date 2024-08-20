@@ -1,4 +1,4 @@
-// ye  input ko  custom  banay h ke liye h   
+ 
 
 "use client"
 import ReactDatePicker from "react-datepicker";
@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { FormFieldType } from "./forms/UserForm"
+import { FormFieldType } from "./forms/PatientForm"
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
 
@@ -34,6 +34,7 @@ interface CustomProps {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
+  // render skeelton is usr for loading purposes like something
   renderSkeleton?: (field: any) => React.ReactNode;
   fieldType: FormFieldType;
 }
@@ -43,17 +44,17 @@ interface CustomProps {
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
 
-  const { fieldType, iconSrc, iconAlt, placeholder,showTimeSelect,dateFormat,renderSkeleton} = props;
+  const { fieldType, iconSrc, iconAlt, placeholder, showTimeSelect,dateFormat,renderSkeleton} = props;
 
   switch (fieldType) {
     case FormFieldType.INPUT:
 
 
       return (
-        <div className=" flex rounded-md  bg-dark-400  border-x-dark-100">
+        <div className=" flex rounded-md  border border-dark-400  bg-dark-400 ">
 
 
-          {
+            {
             iconSrc && (
               <Image
                 src={iconSrc}
@@ -78,15 +79,17 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
         </div>
 
       )
+
       break;
 
-    case FormFieldType.PHONE_INPUT:
+      case FormFieldType.PHONE_INPUT:
       console.log('Current field value:', field.value); // Debugging: Check the value being passed
       return (
         <FormControl>
           <PhoneInput
+        
             defaultCountry="IN"
-            placeholder={props.placeholder}
+            placeholder={placeholder}
             international
             withCountryCallingCode
             // value={field.value as E164Number | undefined}
@@ -118,11 +121,11 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           />
           <FormControl>
             <ReactDatePicker
-              showTimeSelect={props.showTimeSelect ?? false}
+              showTimeSelect={showTimeSelect ?? false}
               selected={field.value}
               onChange={(date) => field.onChange(date)}
               timeInputLabel="Time:"
-              dateFormat={props.dateFormat ?? "dd/MM/yyyy"}
+              dateFormat={dateFormat ?? "dd/MM/yyyy"}
               wrapperClassName="date-picker"
             />
           </FormControl>
@@ -131,7 +134,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
         
 
       case FormFieldType.SKELETON:
-        return props.renderSkeleton ? props.renderSkeleton(field) : null;
+        return renderSkeleton ? renderSkeleton(field) : null;
       
        
 
@@ -144,7 +147,9 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                     <SelectValue placeholder={props.placeholder} /> 
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="shad-select-content">
+                <SelectContent 
+                className="shad-select-content">
+                  {/* yeha wo jo doctor ki mapping ki h wo aayegi */}
                   {props.children}
                 </SelectContent>
               </Select>
@@ -195,11 +200,11 @@ const CustomFormField = (props: CustomProps) => {
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className=" flex-1">
+      <FormItem className=" flex-1">
 
-          {fieldType !== FormFieldType.CHECKBOX && label && (
+      {fieldType !== FormFieldType.CHECKBOX && label && (
             <FormLabel>{label}</FormLabel>
-          )}
+      )}
 
 
           <RenderField field={field} props={props} />

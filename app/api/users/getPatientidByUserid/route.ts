@@ -13,10 +13,10 @@ export async function GET(req: NextRequest) {
 
   try {
     await dbConnect(); // Ensure DB connection
-    const patient = await Patient.findOne({ userid }); // Fetch the patient by userid
+    const patient = await Patient.findOne({ userid }); 
 
     if (patient) {
-      console.log("Patient found:", patient);
+      
       return NextResponse.json({ patient }); 
     } else {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });

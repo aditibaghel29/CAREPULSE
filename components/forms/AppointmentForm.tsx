@@ -1,69 +1,76 @@
-"use client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import axios from "axios";
-import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
-import CustomFormField from "../CustomFormField"
-import SubmitButton from "../SubmitButton"
-import { useState,useEffect } from "react"
-import { CreateAppointmentSchema } from "@/lib/validation"
-import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import CustomFormField from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
+import { useState, useEffect } from "react";
+import {
+  
+  getAppointmentSchema,
+} from "@/lib/validation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "@/constants";
-import { FormFieldType } from "./UserForm";
+import { FormFieldType } from "./PatientForm";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
-import { Appointment } from "@/models/Appointment";
-// ye sab jo neeche likha h wo admin form me h jab hum phir se reschedule akrenge apppointment ko toh wo hamee ye sab paas karna padega
-// 
-// const AppointmentForm=(userId,patientId,types,appointment,setOpen)
-const AppointmentForm = ({   type,
-   userid,
-   patientid,
-  //  appointment,
-   setOpen }: { 
-  
-userid: string; 
-type: "create" | "cancel" | "schedule";
-patientid:string
-// appointment?:Appointment
-setOpen:(open:boolean)=>void
+import { Appointment } from "../../types/appwrite.types";
 
+const AppointmentForm = ({
+  type,
+  userid,
+  patientid,
+  appointment,
+  setOpen,
+ 
+}: {
+  userid: string;
+  patientid: string;
+  type: "create" | "cancel" | "schedule";
+  setOpen?: (open: boolean) => void;
+  appointment?:Appointment;
 
+}) => {
 
-
-
-
- }) => {
+  console.log(userid
+    ,patientid,type)
+ 
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [patientName, setPatientName] = useState<string>("");
-  const form = useForm<z.infer<typeof CreateAppointmentSchema>>({
-    resolver: zodResolver(CreateAppointmentSchema),
+
+
+  const AppointmentFormValidation = getAppointmentSchema(type);
+
+  console.log("appointment is before the from we want to llllllnow on which appointmnet we arev working may be ",appointment);
+
+  const form = useForm<z.infer<typeof   AppointmentFormValidation>>({
+    resolver: zodResolver(AppointmentFormValidation),
+
+
+  
     defaultValues: {
-      
-      primaryPhysician: "",
-      schedule: new Date(),  
-      reason: "",
-      note: "",
-      cancellationReason: "",
-      user:"",
-      patient:"",
-      patientName:""
+      primaryPhysician: appointment ? appointment.primaryPhysician : "",
+      schedule: appointment ? new Date(appointment.schedule) : new Date(),
+      reason: appointment ? appointment.reason : "",
+      note: appointment ? appointment.note : "",
+      cancellationReason: appointment?.cancellationReason ?? undefined,
+      patientid: "",
+      userid: "",
+      patientName: "",
     },
+
   });
 
-  // Fetch patient details when the component mounts
-  console.log('*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*************##################')
-  console.log(patientid);
   useEffect(() => {
-    console.log("patientid in useEffect:", patientid); // In the component
-
     const fetchPatientDetails = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`/api/patient/${patientid}`);
         if (response.data.success) {
           setPatientName(response.data.patient.name);
@@ -75,23 +82,25 @@ setOpen:(open:boolean)=>void
         console.error("Error fetching patient details:", error);
         toast.error("Failed to fetch patient details");
       }
+      finally
+      {
+        setLoading(false);
+      }
     };
-   if(patientid)
-    {
 
+ 
+
+    if (patientid) {
       fetchPatientDetails();
-
     }
-
   }, [patientid, form]);
 
-
-  async function onSubmit(values: z.infer<typeof CreateAppointmentSchema>) {
-    console.log("Form values:", values);
-    console.log("user ID being submitted:", userid);
-    setIsLoading(true);
-    
+  async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
+    console.log("Form Submitted", values);
+    console.log("submitting")
+    setLoading(true);
     let status;
+
     switch (type) {
       case "schedule":
         status = "scheduled";
@@ -99,77 +108,85 @@ setOpen:(open:boolean)=>void
       case "cancel":
         status = "cancelled";
         break;
-     
       default:
         status = "pending";
     }
-  
+
     try {
+   setLoading(true);
       if (type === "create" && patientid) {
         const appointmentData = {
-          user:userid,
-          patient: patientid,
+          userid: userid,
+          patientid: patientid,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
-          reason: values.reason!,
-          status: status as Status,
+          reason: values.reason,
           note: values.note,
-          patientName:patientName
+          status,
+          patientName,
+          cancellationReason: values.cancellationReason ?? null, 
         };
-        console.log("Appointment data before passing to the backend:", appointmentData);
-  
-        const response = await axios.post(`/appointment/create`, appointmentData);
-      console.log(response);
+
+        const response = await axios.post(
+          `/appointment/create`,
+          appointmentData
+        );
         if (response.data.success) {
           form.reset();
-          toast.success("Appointment has been in a procceding state wait for some time");
-          
-          router.replace(`/patient/${patientid}/new-appointment/success?appointmentId=${response.data.newAppointment._id}`);
+          toast.success("Appointment request confirmed.");
+          router.replace(
+            `/patient/${patientid}/new-appointment/success?appointmentId=${response.data.newAppointment._id}`
+          );
         } else {
           toast.error(response.data.message || "An error occurred");
         }
+      } else {
+       
+        const appointmentToUpdate = {
+          userid,
+          appointmentId: appointment?._id!,
+          appointment: {
+            primaryPhysician: values.primaryPhysician,
+            schedule: new Date(values.schedule),
+            status:status as Status,
+            cancellationReason: values.cancellationReason ?? null, 
+            reason: values.reason,
+          },
+          type,
+        };
+
+        console.log("appoitmnet to update is ", appointmentToUpdate);
+        const updatedAppointment = await axios.post(
+          `/appointment/update`,
+          appointmentToUpdate
+        );
+        console.log(
+          "Appointment updated successfully: dekh kya update hoke aa rha",
+          updatedAppointment.data
+        );
+        if (updatedAppointment.data.success) {
+          setOpen && setOpen(false);
+          form.reset();
+          toast.success("Appointment updated successfully.");
+         
+        } else {
+          toast.error(
+            updatedAppointment.data.message ||
+              "An error occurred while updating the appointment"
+          );
+        }
       }
-
-
-      // ye else part bhi admin ke liye likha h 
-      // else{
-      //   const appointmentToUpdate={
-      //     userId,
-      //     appointmnetId:appointment?.$id!,
-      //     appointment:{
-      //       primaryPhysician:values?.primaryPhysician,
-      //       schedule:new Date(values?.schedule),
-      //       status:status as Status
-      //       cancelllationReason:values.?cancellationReason,
-      //     }
-      //     type
-      //   }
-
-        // const updatedAppointmnet=await updatedAppointment(appointmentToUpdate)
-      
-      
-
-      // if(updatedAppointmnet)
-      // {
-      //   setOpen && setOpen(false);
-      // form.reset();
-      // }
-    
-    
-    // }
     } catch (error) {
       console.error("Error during form submission:", error);
       if (axios.isAxiosError(error)) {
-        console.log("Axios error details:", error.response);
-        toast.error(error.response?.data.message || "appointment failed");
+        toast.error(error.response?.data.message || "Appointment failed");
       } else {
         toast.error("Appointment failed");
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
-  
 
   let buttonLabel;
   switch (type) {
@@ -180,21 +197,24 @@ setOpen:(open:boolean)=>void
       buttonLabel = "Schedule Appointment";
       break;
     case "create":
-      buttonLabel = "Create Appointment";  // Corrected typo
+      buttonLabel = "Create Appointment";
       break;
     default:
-      buttonLabel = "Submit Appointment";  // Corrected typo
+      buttonLabel = "Submit Appointment";
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-
-        {/* type=='create && than section */}
-        <section className=" mb-12 space-y-4">
-          <h1 className="header">Hi there 👋</h1>
-          <p className="text-dark-700">Schedule your first appointment in 1 minute</p>
-        </section>
+   
+        {type === "create" && (
+          <section className="mb-12 space-y-4">
+            <h1 className="header">New Appointment</h1>
+            <p className="text-dark-700">
+              Schedule your first appointment in 1 minute
+            </p>
+          </section>
+        )}
 
         {type !== "cancel" && (
           <>
@@ -263,14 +283,16 @@ setOpen:(open:boolean)=>void
         )}
 
         <SubmitButton
-          isLoading={isLoading}
-          className={`${type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"} w-full`}
+          isLoading={Loading}
+          className={`${
+            type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"
+          } w-full`}
         >
           {buttonLabel}
         </SubmitButton>
       </form>
     </Form>
-  )
-}
+  );
+};
 
 export default AppointmentForm;
