@@ -65,8 +65,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
     try {
       const { identificationDocument, ...formData } = values  ;
-      formData.userid = user._id ;
-      const response = await axios.post(`/api/patient/create`, formData);
+      // formData.userid = user._id ;
+      const dataToSubmit: typeof formData & { userid: string } = {
+        ...formData,
+        userid: user._id,
+      };
+      const response = await axios.post(`/api/patient/create`, dataToSubmit);
 
       if (response.data.success) {
         const newPatientId = response.data.newPatient._id;

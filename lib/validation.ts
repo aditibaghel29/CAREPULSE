@@ -57,15 +57,20 @@ export const PatientFormValidation = z.object({
   identificationNumber: z.string().optional(),
   // identificationDocument: z.custom<File>().optional(),
  
-  identificationDocument: z
-    .instanceof(File)
-    .refine((file) => acceptedFileTypes.includes(file.type), {
+  // identificationDocument: z
+  //   .instanceof(File)
+  //   .refine((file) => acceptedFileTypes.includes(file.type), {
+  //     message: "Only image files (JPEG, PNG) or PDF documents are allowed",
+  //   })
+  //   .refine((file) => file.size <= 5 * 1024 * 1024, {
+  //     message: "File size should be less than 5MB",
+  //   }),
+    identificationDocument: z.union([z.string().url(), z.instanceof(File).refine((file) => acceptedFileTypes.includes(file.type), {
       message: "Only image files (JPEG, PNG) or PDF documents are allowed",
     })
     .refine((file) => file.size <= 5 * 1024 * 1024, {
       message: "File size should be less than 5MB",
-    }),
-  
+    }),]),
 
   treatmentConsent: z
     .boolean()

@@ -4,8 +4,23 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 
-export function NewAppointment({ params: { id } }: { params: { id: string } }) 
-{
+import { useSearchParams, useParams } from "next/navigation";
+
+
+const  NewAppointment =(
+ 
+ 
+  // { params: { id } }: { params: { id: string } }
+
+)  =>
+
+  
+
+{ 
+  
+
+  const params = useParams();
+  const { id } = params;
   const [userid, setUserId] = useState<string | null>(null);
   const[loading,setLoading]=useState(true);
 

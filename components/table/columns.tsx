@@ -16,37 +16,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { formatDateTime } from "@/app/lib/utils";
 import AppointmentModal from "../AppointmentModal";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-// export interface AppointmentType {
-//   _id: string;
-//   note?: string;
-//   patientName: string;
-//   patient: string;
-//   primaryPhysician: string;
-//   reason: string;
-//   schedule: string;
-//   status: string;
-//   cancellationReason: string;
-// }
+import {Appointment} from '../../types/appwrite.types'
+
+
 export type TableColumnData = {
-  id: string;
+  _id:string
+  ID: string;
   patientName: string;
   status: Status;
-  schedule: string;
+  schedule: Date;
   primaryPhysician: string;
   patientid: string;
   userid: string;
-  // appointmment: AppointmentType;
+  appointment: Appointment;
+  reason:string
 };
 
 export const columns:
 
 ColumnDef<TableColumnData>[] = [
 
-// export const columns = (
-//   setAppointments: React.Dispatch<React.SetStateAction<TableColumnData[]>>
-// ): ColumnDef<TableColumnData>[] => [
+
   {
     header: "ID",
     cell: ({ row }) => <p className=" text-14-medium ">{row.index + 1}</p>,
@@ -89,16 +79,32 @@ ColumnDef<TableColumnData>[] = [
       );
 
       return (
+        // <div className=" flex items-center gap-3">
+        //   <Image
+        //     src={doctor?.image!}
+        //     alt={doctor.name!}
+        //     width={100}
+        //     height={100}
+        //     className=" size-8 "
+        //   />
+        //   <p className=" wqhitespace-nowrap ">Dr.{doctor?.name}</p>
+        // </div>
         <div className=" flex items-center gap-3">
-          <Image
-            src={doctor?.image!}
-            alt={doctor.name!}
-            width={100}
-            height={100}
-            className=" size-8 "
-          />
-          <p className=" wqhitespace-nowrap ">Dr.{doctor?.name}</p>
-        </div>
+        {doctor ? (
+          <>
+            <Image
+              src={doctor.image}
+              alt={`Dr. ${doctor.name}`}
+              width={100}
+              height={100}
+              className=" size-8 "
+            />
+            <p className=" wqhitespace-nowrap ">Dr. {doctor.name}</p>
+          </>
+        ) : (
+          <p>Doctor not found</p>
+        )}
+      </div>
       );
     },
   },
@@ -107,17 +113,13 @@ ColumnDef<TableColumnData>[] = [
     header: "Status",
   },
 
+ 
   {
     id: "actions",
     header: () => <div className=" pl-4 ">Actions</div>,
-
     cell: ({ row: { original: data } }) => {
-      console.log("Patient ID inside the columns component:", data.patientid);
-      console.log("User ID inside the columns componen:", data.userid);
-      console.log(
-        "data that we are passsing inside the columns component",
-        data
-      );
+      console.log(data);
+      
       return (
         <div className=" flex gap-1 ">
           <AppointmentModal
@@ -125,15 +127,14 @@ ColumnDef<TableColumnData>[] = [
             patientId={data.patientid}
             userId={data.userid}
             appointment={data}
-            // setAppointments={setAppointments}
-          />
+           />
 
           <AppointmentModal
             type="cancel"
             patientId={data.patientid}
             userId={data.userid}
             appointment={data}
-            // setAppointments={setAppointments}
+           
           />
         </div>
       );

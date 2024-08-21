@@ -20,10 +20,11 @@ export const PatientFormDefaultValues = {
   pastMedicalHistory: "",
   identificationType: "Birth Certificate",
   identificationNumber: "",
-  identificationDocument: "",
+  identificationDocument:"",
   treatmentConsent: false,
   disclosureConsent: false,
   privacyConsent: false,
+  userid:""
 };
 
 export const IdentificationTypes = [

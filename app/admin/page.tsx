@@ -41,7 +41,7 @@ const AdminPage = () => {
   }, []);
 
 
-  console.log("all the appointmnets that we  aree psssing  to the  data table are",appointments)
+ 
 
   if (isLoading) {
     return (
@@ -69,7 +69,7 @@ const AdminPage = () => {
     );
   }
 
-  console.log("Appointments  that are passed to DataTable are-:", appointments);
+  
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">

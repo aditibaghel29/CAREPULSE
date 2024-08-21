@@ -30,7 +30,7 @@ const AppointmentForm = ({
  
 }: {
   userid: string;
-  patientid: string;
+  patientid: string | string[];
   type: "create" | "cancel" | "schedule";
   setOpen?: (open: boolean) => void;
   appointment?:Appointment;

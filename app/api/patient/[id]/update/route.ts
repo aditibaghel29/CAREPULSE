@@ -10,7 +10,7 @@ export async function PATCH(
   try {
     const { id } = params;
     const { identificationDocument } = await request.json();
-    console.log('Received identificationDocument:', request.body.identificationDocument);
+   
     if (typeof identificationDocument !== 'string') {
         throw new Error('Invalid data type for identificationDocument');
       }

@@ -24,13 +24,15 @@ export interface Patient extends Models.Document {
   privacyConsent: boolean;
 }
 
-export interface Appointment extends Models.Document {
+export interface Appointment {
+  _id:string
   patientid: string;
-  schedule: Date;
-  status: Status;
   primaryPhysician: string;
+  schedule: Date;
   reason: string;
-  note: string;
+  status: Status;
+  note?: string;
   userid: string;
-  cancellationReason: string | null;
+  patientName:string,
+  cancellationReason?: string | null;
 }
