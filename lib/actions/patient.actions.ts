@@ -1,7 +1,7 @@
 // lib/actions/patient.actions.ts
 
 
-import UserModel from "@/models/User";
+import UserModel from "@models/User";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios from "axios";
 

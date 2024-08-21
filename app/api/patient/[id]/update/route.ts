@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
-import Patient from "@/models/Patient";
-
+// import Patient from "@/models/Patient";
+import Patient from "@models/Patient";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
