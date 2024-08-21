@@ -1,5 +1,6 @@
 
 import AppointmentModel from "@/models/Appointment";
+import UserModel from "@/models/User";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 export async function POST(request: Request) {
