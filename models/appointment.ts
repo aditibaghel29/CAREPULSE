@@ -1,18 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-// export interface Appointment extends Document {
-//   primaryPhysician: string;
-//   schedule: Date;
-//   reason: string;
-//   note: string;
-//   user: mongoose.Types.ObjectId;
-//   patient: mongoose.Types.ObjectId;
-//   status: "scheduled" | "cancelled"|"pending";
-//   patientName:string;
 
-// }
 
-// Define the Appointment schema
 const AppointmentSchema: Schema = new mongoose.Schema({
   patientid: {
     type: String,
