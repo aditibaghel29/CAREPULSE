@@ -1,7 +1,7 @@
 
 
 import dbConnect from "@/lib/dbConnect";
-import UserModel from "@models/User";
+import UserModel from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { userid: string } }) {

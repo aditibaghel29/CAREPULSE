@@ -1,7 +1,7 @@
 // route.ts (for Next.js 13+ using the `app/` directory)
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Patient from '@models/Patient';
+import Patient from '@/models/Patient';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
