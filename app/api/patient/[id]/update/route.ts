@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
-// import Patient from "@/models/Patient";
-import Patient from "@/models/Patient";
+
+
+import PatientModel from "@/models/Patient";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
@@ -15,7 +16,7 @@ export async function PATCH(
         throw new Error('Invalid data type for identificationDocument');
       }
     await dbConnect();
-    const updatedPatient = await Patient.findByIdAndUpdate(id, { identificationDocument }, { new: true });
+    const updatedPatient = await PatientModel.findByIdAndUpdate(id, { identificationDocument }, { new: true });
 
     return NextResponse.json({ success: true, updatedPatient });
   } catch (error) {

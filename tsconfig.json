@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]  // This should resolve everything from the root
+      "@/*": ["./*"]  
+      
     }
   },
   "include": [
@@ -29,7 +30,7 @@
     ".next/types/**/*.ts", 
     "lib/cloudinary.js",
     "app", 
-    "models"  // Ensure "models" is included
+    "models"  
   ],
   "exclude": ["node_modules"]
 }
