@@ -1,7 +1,8 @@
 
 
 
-import AppointmentModel from "@/models/Appointment";
+// import AppointmentModel from "@/models/Appointment";
+import AppointmentModel from "../../../models/Appointment"
 import { NextResponse } from "next/server";
 
 

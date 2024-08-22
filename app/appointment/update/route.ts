@@ -2,7 +2,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import dbConnect from '@/lib/dbConnect';
 
-import AppointmentModel from "@/models/Appointment";
+// import AppointmentModel from "@/models/Appointment";
+import AppointmentModel from "../../../models/Appointment"
 import { revalidatePath } from "next/cache";
 
 export async function POST(req: NextRequest) {
