@@ -91,10 +91,19 @@ const RequestSuccess = () => {
             <p> {formatDateTime(appointmentDetails.schedule).dateTime}</p>
           </div>
         </section>
-
-        <Button variant="outline" className="shad-primary-btn" asChild>
+<div className="flex gap-12 ">
+  <div><Button variant="outline" className="shad-primary-btn" asChild>
           <Link href={`/patient/${id}/new-appointment`}>New Appointment</Link>
+        </Button> </div>
+  <div>
+        <Button variant="outline" className="shad-primary-btn" asChild>
+          <Link href={`/payments/checkout`}> Fee Payment</Link>
         </Button>
+  </div>
+
+        
+</div>
+       
 
         <p className="copyright">© 2024 CarePluse</p>
       </div>
